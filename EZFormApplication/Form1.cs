@@ -54,11 +54,7 @@
             //create event object to avoid sleep/poll check
             this.frameEventObject = new EventWaitHandle(false, EventResetMode.AutoReset);
 
-            ////create a timer to display the number of frames per second 
-            //this.fpsTimer = new System.Windows.Forms.Timer();
-            //this.fpsTimer.Interval = 60 * 1000; // 1 second
-            //this.fpsTimer.Tick += this.FpsTimer_Tick;
-            //this.fpsTimer.Enabled;
+            //activate forms timer
             this.OneSecondTimer.Enabled = true;
             this.OneSecondTimer.Start();
         }
