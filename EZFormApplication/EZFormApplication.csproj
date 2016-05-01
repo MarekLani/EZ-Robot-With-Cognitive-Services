@@ -36,8 +36,13 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EZ_B">
-      <HintPath>..\packages\EZ_B.dll.2015.05.20.00\EZ_B.dll</HintPath>
+    <Reference Include="aForge, Version=2015.5.16.0, Culture=neutral, PublicKeyToken=c3a3457c97d352d9, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EZB.SDK\aForge.dll</HintPath>
+    </Reference>
+    <Reference Include="EZ_B, Version=2015.5.20.0, Culture=neutral, PublicKeyToken=c3a3457c97d352d9, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EZB.SDK\EZ_B.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -85,12 +90,19 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Content Include="avm.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>xcopy /y $(ProjectDir)..\packages\ezb.sdk\avm.dll $(ProjectDir)$(OutDir)
+xcopy /y $(ProjectDir)..\packages\ezb.sdk\ffmpeg.dll $(ProjectDir)$(OutDir)
+xcopy /y $(ProjectDir)..\packages\ezb.sdk\avutil-*.dll $(ProjectDir)$(OutDir)
+xcopy /y $(ProjectDir)..\packages\ezb.sdk\avcodec-*.dll $(ProjectDir)$(OutDir)
+xcopy /y $(ProjectDir)..\packages\ezb.sdk\avformat-*.dll $(ProjectDir)$(OutDir)
+xcopy /y $(ProjectDir)..\packages\ezb.sdk\avdevice-*.dll $(ProjectDir)$(OutDir)
+xcopy /y $(ProjectDir)..\packages\ezb.sdk\avfilter-*.dll $(ProjectDir)$(OutDir)
+xcopy /y $(ProjectDir)..\packages\ezb.sdk\swscale-*.dll $(ProjectDir)$(OutDir)
+xcopy /y $(ProjectDir)..\packages\ezb.sdk\swresample-*.dll $(ProjectDir)$(OutDir)
+</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

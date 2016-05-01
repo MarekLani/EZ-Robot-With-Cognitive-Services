@@ -36,17 +36,20 @@
             this.label2 = new System.Windows.Forms.Label();
             this.ImageFileNameTB = new System.Windows.Forms.TextBox();
             this.StartCameraButton = new System.Windows.Forms.Button();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.Video1GB = new System.Windows.Forms.GroupBox();
             this.FpsLabel = new System.Windows.Forms.Label();
             this.fpsLabelLabel = new System.Windows.Forms.Label();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.InfoGB = new System.Windows.Forms.GroupBox();
             this.DebugTextBox = new System.Windows.Forms.TextBox();
             this.OneSecondTimer = new System.Windows.Forms.Timer(this.components);
+            this.Video2GB = new System.Windows.Forms.GroupBox();
+            this.Video2P = new System.Windows.Forms.Panel();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.groupBox1.SuspendLayout();
-            this.groupBox2.SuspendLayout();
+            this.Video1GB.SuspendLayout();
+            this.InfoGB.SuspendLayout();
+            this.Video2GB.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
-            this.groupBox3.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -115,22 +118,20 @@
             this.StartCameraButton.UseVisualStyleBackColor = true;
             this.StartCameraButton.Click += new System.EventHandler(this.StartCameraButton_Click);
             // 
-            // groupBox2
+            // Video1GB
             // 
-            this.groupBox2.Controls.Add(this.FpsLabel);
-            this.groupBox2.Controls.Add(this.fpsLabelLabel);
-            this.groupBox2.Controls.Add(this.pictureBox1);
-            this.groupBox2.Location = new System.Drawing.Point(15, 135);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(411, 154);
-            this.groupBox2.TabIndex = 11;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Video";
+            this.Video1GB.Controls.Add(this.pictureBox1);
+            this.Video1GB.Location = new System.Drawing.Point(15, 152);
+            this.Video1GB.Name = "Video1GB";
+            this.Video1GB.Size = new System.Drawing.Size(343, 269);
+            this.Video1GB.TabIndex = 11;
+            this.Video1GB.TabStop = false;
+            this.Video1GB.Text = "Video Frames";
             // 
             // FpsLabel
             // 
             this.FpsLabel.AutoSize = true;
-            this.FpsLabel.Location = new System.Drawing.Point(294, 43);
+            this.FpsLabel.Location = new System.Drawing.Point(129, 136);
             this.FpsLabel.Name = "FpsLabel";
             this.FpsLabel.Size = new System.Drawing.Size(0, 13);
             this.FpsLabel.TabIndex = 11;
@@ -139,30 +140,22 @@
             // fpsLabelLabel
             // 
             this.fpsLabelLabel.AutoSize = true;
-            this.fpsLabelLabel.Location = new System.Drawing.Point(191, 43);
+            this.fpsLabelLabel.Location = new System.Drawing.Point(12, 136);
             this.fpsLabelLabel.Name = "fpsLabelLabel";
             this.fpsLabelLabel.Size = new System.Drawing.Size(97, 13);
             this.fpsLabelLabel.TabIndex = 9;
             this.fpsLabelLabel.Text = "frames per second:";
             this.fpsLabelLabel.Visible = false;
             // 
-            // pictureBox1
+            // InfoGB
             // 
-            this.pictureBox1.Location = new System.Drawing.Point(13, 19);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(160, 120);
-            this.pictureBox1.TabIndex = 4;
-            this.pictureBox1.TabStop = false;
-            // 
-            // groupBox3
-            // 
-            this.groupBox3.Controls.Add(this.DebugTextBox);
-            this.groupBox3.Location = new System.Drawing.Point(15, 296);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(411, 190);
-            this.groupBox3.TabIndex = 12;
-            this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "Info";
+            this.InfoGB.Controls.Add(this.DebugTextBox);
+            this.InfoGB.Location = new System.Drawing.Point(15, 427);
+            this.InfoGB.Name = "InfoGB";
+            this.InfoGB.Size = new System.Drawing.Size(692, 170);
+            this.InfoGB.TabIndex = 12;
+            this.InfoGB.TabStop = false;
+            this.InfoGB.Text = "Info";
             // 
             // DebugTextBox
             // 
@@ -170,7 +163,7 @@
             this.DebugTextBox.Multiline = true;
             this.DebugTextBox.Name = "DebugTextBox";
             this.DebugTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.DebugTextBox.Size = new System.Drawing.Size(381, 160);
+            this.DebugTextBox.Size = new System.Drawing.Size(671, 139);
             this.DebugTextBox.TabIndex = 5;
             // 
             // OneSecondTimer
@@ -178,13 +171,41 @@
             this.OneSecondTimer.Interval = 1000;
             this.OneSecondTimer.Tick += new System.EventHandler(this.OneSecondTimer_Tick);
             // 
+            // Video2GB
+            // 
+            this.Video2GB.Controls.Add(this.Video2P);
+            this.Video2GB.Location = new System.Drawing.Point(364, 152);
+            this.Video2GB.Name = "Video2GB";
+            this.Video2GB.Size = new System.Drawing.Size(343, 269);
+            this.Video2GB.TabIndex = 13;
+            this.Video2GB.TabStop = false;
+            this.Video2GB.Text = "Processed Video";
+            // 
+            // Video2P
+            // 
+            this.Video2P.Location = new System.Drawing.Point(13, 19);
+            this.Video2P.Name = "Video2P";
+            this.Video2P.Size = new System.Drawing.Size(320, 240);
+            this.Video2P.TabIndex = 0;
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Location = new System.Drawing.Point(11, 19);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(320, 240);
+            this.pictureBox1.TabIndex = 0;
+            this.pictureBox1.TabStop = false;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(444, 495);
-            this.Controls.Add(this.groupBox3);
-            this.Controls.Add(this.groupBox2);
+            this.ClientSize = new System.Drawing.Size(724, 609);
+            this.Controls.Add(this.Video2GB);
+            this.Controls.Add(this.FpsLabel);
+            this.Controls.Add(this.InfoGB);
+            this.Controls.Add(this.fpsLabelLabel);
+            this.Controls.Add(this.Video1GB);
             this.Controls.Add(this.StartCameraButton);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.IpAddressTB);
@@ -195,11 +216,11 @@
             this.Load += new System.EventHandler(this.Form1_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            this.groupBox2.ResumeLayout(false);
-            this.groupBox2.PerformLayout();
+            this.Video1GB.ResumeLayout(false);
+            this.InfoGB.ResumeLayout(false);
+            this.InfoGB.PerformLayout();
+            this.Video2GB.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
-            this.groupBox3.ResumeLayout(false);
-            this.groupBox3.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -214,13 +235,15 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox ImageFileNameTB;
         private System.Windows.Forms.Button StartCameraButton;
-        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.GroupBox Video1GB;
         private System.Windows.Forms.Label FpsLabel;
         private System.Windows.Forms.Label fpsLabelLabel;
-        private System.Windows.Forms.PictureBox pictureBox1;
-        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.GroupBox InfoGB;
         private System.Windows.Forms.TextBox DebugTextBox;
         private System.Windows.Forms.Timer OneSecondTimer;
+        private System.Windows.Forms.GroupBox Video2GB;
+        private System.Windows.Forms.Panel Video2P;
+        private System.Windows.Forms.PictureBox pictureBox1;
     }
 }
 

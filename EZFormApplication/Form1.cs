@@ -51,6 +51,7 @@
             this.camera.OnNewFrame += this.CameraOnOnNewFrame;
             this.camera.OnStop += this.CameraOnStop;
 
+
             //create event object to avoid sleep/poll check
             this.frameEventObject = new EventWaitHandle(false, EventResetMode.AutoReset);
 
@@ -154,6 +155,15 @@
             this.frameEventObject.Set();
             this.pictureBox1.Invoke(new EventHandler(delegate { this.pictureBox1.Image = this.camera.GetCurrentBitmap; }));
             Interlocked.Increment(ref this.fpsCounter);
+
+            var objectLocation = this.camera.CameraFaceDetection.GetFaceDetection();
+            if (objectLocation.IsObjectFound)
+            {
+                if (this.fpsCounter == 1)
+                {
+                    this.WriteDebug(string.Format("Face detected at H:{0} V:{1}", objectLocation.HorizontalLocation, objectLocation.VerticalLocation));
+                }
+            }
         }
 
         private void CameraOnStop()
@@ -173,7 +183,7 @@
 
         private void StartOrStopCamera()
         {
-            var labels = this.StartCameraButton.Tag.ToString().Split(new[] { '|' });
+            var labels = this.StartCameraButton.Tag.ToString().Split(new[] {'|'});
 
             if (this.camera.IsActive)
             {
@@ -185,8 +195,10 @@
             {
                 this.WriteDebug("Starting camera.");
                 this.frameEventObject.Reset();
-                this.camera.StartCamera(new ValuePair("EZB://" + this.IpAddressTB.Text), 160, 120);
+                this.camera.StartCamera(new ValuePair("EZB://" + this.IpAddressTB.Text), 320, 240);
+                //this.camera.StartCamera(new ValuePair("EZB://" + this.IpAddressTB.Text), this.Video1P, this.Video2P, 320, 240);
                 this.StartCameraButton.Text = labels[1];
+                this.camera.SetPreviewControl = this.Video2P;
             }
         }
     }
