@@ -82,6 +82,37 @@
             }
         }
 
+        private void StartOrStopVideoRecordingButton_Click(object sender, EventArgs e)
+        {
+            if (!this.camera.IsActive)
+            {
+                this.WriteDebug("ERROR: Camera not started");
+                return;
+            }
+
+            //Note: .Tag = "Start Video Recording|Stop Video Recording
+            var labels = this.StartOrStopVideoRecordingButton.Tag.ToString().Split(new[] {'|'});
+
+            if (!this.camera.AVIIsRecording)
+            {
+                var filename = this.ImageFileNameTB.Text + ".avi";
+                this.WriteDebug("AVI Start recording to file=" + filename + " .");
+
+                const int framesPerSecond = 3;
+                this.camera.AVIStartRecording(filename, Camera.VideoCodec.MPEG4, framesPerSecond);
+
+                this.StartOrStopVideoRecordingButton.Text = labels[1];
+            }
+            else
+            {
+                this.WriteDebug("AVI Stop recording");
+
+                this.camera.AVIStopRecording();
+
+                this.StartOrStopVideoRecordingButton.Text = labels[0];
+            }
+        }
+
         private void TakeAPicButton_Click(object sender, EventArgs e)
         {
             //to avoid concurrency issues
@@ -156,12 +187,16 @@
             this.pictureBox1.Invoke(new EventHandler(delegate { this.pictureBox1.Image = this.camera.GetCurrentBitmap; }));
             Interlocked.Increment(ref this.fpsCounter);
 
-            var objectLocation = this.camera.CameraFaceDetection.GetFaceDetection();
-            if (objectLocation.IsObjectFound)
+            var objectLocations = this.camera.CameraFaceDetection.GetFaceDetection();
+            //if (objectLocation.IsObjectFound)
+            if (objectLocations.Length > 0)
             {
                 if (this.fpsCounter == 1)
                 {
-                    this.WriteDebug(string.Format("Face detected at H:{0} V:{1}", objectLocation.HorizontalLocation, objectLocation.VerticalLocation));
+                    foreach (var objectLocation in objectLocations)
+                    {
+                        this.WriteDebug(string.Format("Face detected at H:{0} V:{1}", objectLocation.HorizontalLocation, objectLocation.VerticalLocation));
+                    }
                 }
             }
         }

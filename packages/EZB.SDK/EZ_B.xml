@@ -29,6 +29,11 @@
             List of ADC Ports
             </summary>
         </member>
+        <member name="M:EZ_B.AvgHistogramCls.Add(System.Double)">
+            <summary>
+            Add a new item to the histogram and return the current average
+            </summary>
+        </member>
         <member name="F:EZ_B.VideoCapture.Capture.graphState">
             <summary> Fired when a capture is completed (manually or automatically). </summary>
         </member>
@@ -725,12 +730,6 @@
             heading = atan2(x, y) / 0.0174532925
             </summary>
         </member>
-        <member name="P:EZ_B.Classes.MPU9150Cls.Heading">
-            <summary>
-            Degrees are assuming compass is flat with no tilt using X and Y for easy calculation
-            heading = atan2(x, y) / 0.0174532925
-            </summary>
-        </member>
         <member name="M:DShowNET.DsUtils.FreeAMMediaType(DShowNET.AMMediaType)">
             <summary> 
              Free the nested structures and release any 
@@ -866,6 +865,57 @@
         <member name="F:DShowNET.FindDirection.DownstreamOnly">
             <summary> LOOK_DOWNSTREAM_ONLY </summary>
         </member>
+        <member name="T:EZ_B.EZTaskScheduler">
+            <summary>
+            This scheduler ensures tasks are executed on a background threads with queuing. Tasks are added to the queue and when completed, the next task runs.
+            </summary>
+        </member>
+        <member name="M:EZ_B.EZTaskScheduler.AddToQueue(System.Object)">
+            <summary>
+            Add task to the queue.
+            *Note: This does not start the task scheduler if it's not already running.
+                   You can use this to "prep" tasks to be executed.
+                   If you want to add more items to the queue AND run them, use the StartNew()
+            </summary>
+        </member>
+        <member name="M:EZ_B.EZTaskScheduler.ProcessItemsInQueue">
+            <summary>
+            This will execute the scheduler to begin processing the items in the queue if the scheduler is not already running
+            *Note: This is only needed to be called if you prepped the queue with AddToQueue() when the scheduler wasn't already running
+                   Remember, the scheduler runs when the StartNew() is used. 
+            </summary>
+        </member>
+        <member name="M:EZ_B.EZTaskScheduler.StartNew(System.Object)">
+            <summary>
+            Add items to the queue and start the scheduler to begin processing them
+            *Note: This is the method that you should always be using unless you wish to prep items ahead of time, then use AddtoQueue() and ProcesItemsToQueue(), respectively.
+            </summary>
+        </member>
+        <member name="E:EZ_B.EZTaskScheduler.OnEventError">
+            <summary>
+            Raised if the event throws an exeception on the same thread as the event was executed.
+            </summary>
+        </member>
+        <member name="E:EZ_B.EZTaskScheduler.OnEventCompleted">
+            <summary>
+            Raised when the event has completed on the same thread as the event executed.
+            </summary>
+        </member>
+        <member name="E:EZ_B.EZTaskScheduler.OnEventStart">
+            <summary>
+            Raised before the event is started on the same thread as the event will execute.
+            </summary>
+        </member>
+        <member name="E:EZ_B.EZTaskScheduler.OnEventToRun">
+            <summary>
+            The event/task that will run for every instance.
+            </summary>
+        </member>
+        <member name="E:EZ_B.EZTaskScheduler.OnQueueCompleted">
+            <summary>
+            Raised when all events/tasks in the queue have completed executing. Executes on the same thread that the last task ran on.
+            </summary>
+        </member>
         <member name="M:EZ_B.FormCameraCustomColor.#ctor(EZ_B.Camera)">
             <summary>
             This will create an instance of the custom color define form. Make sure you stop the existing event for the camera's OnNewFrame with a -= before and reset it with a += after.
@@ -895,6 +945,41 @@
             <summary>
             Required method for Designer support - do not modify
             the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="F:EZ_B.RGB8x8Animator.Name">
+            <summary>
+            Unique name for this auto position instance
+            </summary>
+        </member>
+        <member name="M:EZ_B.RGB8x8Animator.#ctor(EZ_B.EZB,System.String)">
+            <summary>
+            Create an instance of the AutoPosition Control
+            </summary>
+        </member>
+        <member name="M:EZ_B.RGB8x8Animator.DisposeOverride">
+            <summary>
+            Dispose of the AutoPositioner
+            </summary>    
+        </member>
+        <member name="M:EZ_B.RGB8x8Animator.Stop">
+            <summary>
+            Stops the current movement. Blocks until stop is successful.
+            </summary>
+        </member>
+        <member name="M:EZ_B.RGB8x8Animator.ExecAction(EZ_B.Classes.RGB8x8AnimatorAction)">
+            <summary>
+            Execute the Action
+            </summary>
+        </member>
+        <member name="E:EZ_B.RGB8x8Animator.OnComplete">
+            <summary>
+            Event risen when movement is complete
+            </summary>
+        </member>
+        <member name="E:EZ_B.RGB8x8Animator.OnStartAction">
+            <summary>
+            Event risen when an action is started
             </summary>
         </member>
         <member name="T:MyoSharp.Communication.Channel">
@@ -1921,6 +2006,11 @@
             Recognition data structure
             </summary>
         </member>
+        <member name="M:EZ_B.CameraDetection.AVMObjectDetection.LoadObjects(EZ_B.AVM.TrainedObjectsContainer)">
+            <summary>
+            Load any trained objects from an XML container of a saved file
+            </summary>
+        </member>
         <member name="M:EZ_B.CameraDetection.AVMObjectDetection.GetDetectedObjects(System.Boolean,System.Boolean)">
             <summary>
             </summary>
@@ -2005,6 +2095,68 @@
         <member name="P:EZ_B.HT16K33.Matrix">
             <summary>
             Set or Get the matrix data (8x8 array)
+            </summary>
+        </member>
+        <member name="F:EZ_B.RGB8x8.I2C_ADDRESS">
+            <summary>
+            Default I2C Address of the RGB 8x8 Module (0xa2)
+            </summary>
+        </member>
+        <member name="F:EZ_B.RGB8x8.INDEX_MAX">
+            <summary>
+            The number of RGB LEDs is referenced by the index
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:EZ_B.RGB8x8.ChangeI2CAddress(System.Byte,System.Byte)" -->
+        <!-- Badly formed XML comment ignored for member "M:EZ_B.RGB8x8.ClearDisplay" -->
+        <!-- Badly formed XML comment ignored for member "M:EZ_B.RGB8x8.ClearDisplay(System.Byte)" -->
+        <!-- Badly formed XML comment ignored for member "M:EZ_B.RGB8x8.ClearDisplay(System.Boolean,System.Boolean,System.Boolean)" -->
+        <!-- Badly formed XML comment ignored for member "M:EZ_B.RGB8x8.ClearDisplay(System.Byte,System.Boolean,System.Boolean,System.Boolean)" -->
+        <member name="M:EZ_B.RGB8x8.SetAllColor(System.Boolean,System.Boolean,System.Boolean)">
+            <summary>
+            Sets all of the LED's to the specific color.
+            </summary>
+        </member>
+        <member name="M:EZ_B.RGB8x8.SetAllColor(System.Boolean,System.Boolean,System.Boolean,System.Byte)">
+            <summary>
+            Sets all of the LED's to the specific color.
+            </summary>
+        </member>
+        <member name="M:EZ_B.RGB8x8.SetColor(System.Int32,System.Boolean,System.Boolean,System.Boolean)">
+            <summary>
+            Sets the color of the specified index.
+            </summary>
+        </member>
+        <member name="M:EZ_B.RGB8x8.SetColor(System.Int32,System.Boolean,System.Boolean,System.Boolean,System.Byte)">
+            <summary>
+            Sets the color of the specified index.
+            </summary>
+        </member>
+        <member name="M:EZ_B.RGB8x8.SetColor(System.Int32,System.Int32,System.Boolean,System.Boolean,System.Boolean)">
+            <summary>
+            Sets the color of the specified index.
+            </summary>
+        </member>
+        <member name="M:EZ_B.RGB8x8.SetColor(System.Int32,System.Int32,System.Boolean,System.Boolean,System.Boolean,System.Byte)">
+            <summary>
+            Sets the color of the specified index.
+            </summary>
+        </member>
+        <member name="M:EZ_B.RGB8x8.SetColors(EZ_B.RGB8x8.RGBDef[])">
+            <summary>
+            Sets the LED's to the specific color.
+            The RGBDef must be 64 items or less. 
+            </summary>
+        </member>
+        <member name="M:EZ_B.RGB8x8.SetColors(EZ_B.RGB8x8.RGBDef[],System.Byte)">
+            <summary>
+            Sets the LED's to the specific color.
+            The RGBDef must be 64 items or less. 
+            </summary>
+        </member>
+        <member name="P:EZ_B.RGB8x8.SetEZB">
+            <summary>
+            Set the EZ-B being used by these RGB 8x8
             </summary>
         </member>
         <member name="F:EZ_B.RGBEyes.I2C_ADDRESS">
@@ -2134,6 +2286,16 @@
             Flash color of the MIP chest LED. Colors can be between 0-255, and timeOn and timeOff is 20ms intervals between 0-255
             </summary>
         </member>
+        <member name="M:EZ_B.SerialRGBLED.SetColor(EZ_B.Digital.DigitalPortEnum,System.Byte,System.Byte,System.Byte)">
+            <summary>
+            Set the brightness of each led component. The value is 0-15
+            </summary>
+        </member>
+        <member name="M:EZ_B.SerialRGBLED.SetColor(EZ_B.Digital.DigitalPortEnum,EZ_B.SerialRGBLED.ColorEnum,System.Byte)">
+            <summary>
+            Set the brightness of each led component. The value is 0-15
+            </summary>
+        </member>
         <member name="M:EZ_B.CameraDetection.CustomColorDetection.GetObjectLocationByColor(System.Boolean,System.Int32,System.Int32,System.Int32,System.Single,System.Single,System.Single,System.Single)">
             <summary>
             Check for an object of the specified color. Returns a class that references its location.
@@ -2223,164 +2385,172 @@
             Signal Inverted?
             </summary>
         </member>
-        <member name="F:EZ_B.Soundv4.RECOMMENDED_PACKET_SIZE">
+        <member name="F:EZ_B.EZBv4Sound.RECOMMENDED_PACKET_SIZE">
             <summary>
             The recommended size of the the audio packets
             </summary>
         </member>
-        <member name="F:EZ_B.Soundv4.RECOMMENDED_PREBUFFER_SIZE">
+        <member name="F:EZ_B.EZBv4Sound.RECOMMENDED_PREBUFFER_SIZE">
             <summary>
             The recommended size of the prebuffer before playing the audio
             </summary>
         </member>
-        <member name="F:EZ_B.Soundv4.AUDIO_SAMPLE_BITRATE">
+        <member name="F:EZ_B.EZBv4Sound.AUDIO_SAMPLE_BITRATE">
             <summary>
             The sample rate at which the data is played back on the EZ-B
             </summary>
         </member>
-        <member name="F:EZ_B.Soundv4.PACKET_SIZE">
+        <member name="F:EZ_B.EZBv4Sound.PACKET_SIZE">
             <summary>
             The size of each packet which is transmitted over the wire to the EZ-B.
             </summary>
         </member>
-        <member name="F:EZ_B.Soundv4.PREBUFFER_SIZE">
+        <member name="F:EZ_B.EZBv4Sound.PREBUFFER_SIZE">
             <summary>
             The ammount of data to prebuffer to the EZ-B before playing the audio. The EZ-B has a 50k buffer, so this value cannot be any higher than that.
             </summary>
         </member>
-        <member name="M:EZ_B.Soundv4.PlayDataWait(System.Byte[])">
+        <member name="M:EZ_B.EZBv4Sound.PlayDataWait(System.Byte[])">
             <summary>
             Play the Audio Data out of the EZ-B. 
             The audio must be RAW 8 Bit at 18 KHZ Sample Rate
             </summary>
         </member>
-        <member name="M:EZ_B.Soundv4.PlayData(System.Byte[])">
+        <member name="M:EZ_B.EZBv4Sound.PlayData(System.Byte[])">
             <summary>
             Stream raw audio data to the EZ-B v4's speakers.
             0 is silent, 100 is normal, 200 is 2x gain, 300 is 3x gain, etc.
             The audio must be RAW 8 Bit at 18 KHZ Sample Rate
             </summary>
         </member>
-        <member name="M:EZ_B.Soundv4.PlayData(System.Byte[],System.Decimal)">
+        <member name="M:EZ_B.EZBv4Sound.PlayData(System.Byte[],System.Decimal)">
             <summary>
             Stream raw audio data to the EZ-B v4's speakers.
             0 is silent, 100 is normal, 200 is 2x gain, 300 is 3x gain, etc.
             The audio must be RAW 8 Bit at 18 KHZ Sample Rate
             </summary>
         </member>
-        <member name="M:EZ_B.Soundv4.PlayData(System.Byte[],System.Decimal,System.Int32[])">
+        <member name="M:EZ_B.EZBv4Sound.PlayData(System.Byte[],System.Decimal,System.Int32[])">
             <summary>
             Stream raw audio data to the EZ-B v4's speakers.
             0 is silent, 100 is normal, 200 is 2x gain, 300 is 3x gain, etc.
             The audio must be RAW 8 Bit at 18 KHZ Sample Rate
             </summary>
         </member>
-        <member name="M:EZ_B.Soundv4.PlayDataWait(System.Byte[],System.Decimal)">
+        <member name="M:EZ_B.EZBv4Sound.PlayDataWait(System.Byte[],System.Decimal)">
             <summary>
             Stream raw audio data to the EZ-B v4's speakers.
             0 is silent, 100 is normal, 200 is 2x gain, 300 is 3x gain, etc.
             The audio must be RAW 8 Bit at 18 KHZ Sample Rate
             </summary>
         </member>
-        <member name="M:EZ_B.Soundv4.PlayData(System.IO.Stream)">
+        <member name="M:EZ_B.EZBv4Sound.PlayData(System.IO.Stream)">
             <summary>
             Stream raw audio data to the EZ-B v4's speakers.
             0 is silent, 100 is normal, 200 is 2x gain, 300 is 3x gain, etc.
             The audio must be RAW 8 Bit at 18 KHZ Sample Rate
+            *Note: You must dispose of the memory stream yourself after calling this
             </summary>
         </member>
-        <member name="M:EZ_B.Soundv4.PlayData(System.IO.Stream,System.Int32[])">
+        <member name="M:EZ_B.EZBv4Sound.PlayData(System.IO.Stream,System.Int32[])">
             <summary>
             Stream raw audio data to the EZ-B v4's speakers.
             0 is silent, 100 is normal, 200 is 2x gain, 300 is 3x gain, etc.
             The audio must be RAW 8 Bit at 18 KHZ Sample Rate
+            *Note: You must dispose of the memory stream yourself after calling this
             </summary>
         </member>
-        <member name="M:EZ_B.Soundv4.PlayData(System.IO.Stream,System.Int32[],System.Int32)">
+        <member name="M:EZ_B.EZBv4Sound.PlayData(System.IO.Stream,System.Int32[],System.Int32)">
             <summary>
             Stream raw audio data to the EZ-B v4's speakers.
             0 is silent, 100 is normal, 200 is 2x gain, 300 is 3x gain, etc.
             The audio must be RAW 8 Bit at 18 KHZ Sample Rate
+            *Note: You must dispose of the memory stream yourself after calling this
             </summary>
         </member>
-        <member name="M:EZ_B.Soundv4.PlayDataWait(System.IO.Stream)">
+        <member name="M:EZ_B.EZBv4Sound.PlayDataWait(System.IO.Stream)">
             <summary>
             Stream raw audio data to the EZ-B v4's speakers.
             0 is silent, 100 is normal, 200 is 2x gain, 300 is 3x gain, etc.
             The audio must be RAW 8 Bit at 18 KHZ Sample Rate
+            *Note: You must dispose of the memory stream yourself after calling this
             </summary>
         </member>
-        <member name="M:EZ_B.Soundv4.PlayData(System.IO.Stream,System.Decimal)">
+        <member name="M:EZ_B.EZBv4Sound.PlayData(System.IO.Stream,System.Decimal)">
             <summary>
             Stream raw audio data to the EZ-B v4's speakers.
             0 is silent, 100 is normal, 200 is 2x gain, 300 is 3x gain, etc.
             The audio must be RAW 8 Bit at 18 KHZ Sample Rate
+            *Note: You must dispose of the memory stream yourself after calling this
             </summary>
         </member>
-        <member name="M:EZ_B.Soundv4.PlayData(System.IO.Stream,System.Decimal,System.Int32[])">
+        <member name="M:EZ_B.EZBv4Sound.PlayData(System.IO.Stream,System.Decimal,System.Int32[])">
             <summary>
             Stream raw audio data to the EZ-B v4's speakers.
             0 is silent, 100 is normal, 200 is 2x gain, 300 is 3x gain, etc.
             The audio must be RAW 8 Bit at 18 KHZ Sample Rate
+            *Note: You must dispose of the memory stream yourself after calling this
             </summary>
         </member>
-        <member name="M:EZ_B.Soundv4.PlayData(System.IO.Stream,System.Decimal,System.Int32[],System.Int32)">
+        <member name="M:EZ_B.EZBv4Sound.PlayData(System.IO.Stream,System.Byte[],System.Decimal,System.Int32[],System.Int32)">
             <summary>
             Stream raw audio data to the EZ-B v4's speakers.
             0 is silent, 100 is normal, 200 is 2x gain, 300 is 3x gain, etc.
             The audio must be RAW 8 Bit at 18 KHZ Sample Rate
+            *Note: You must dispose of the memory stream yourself after calling this
             </summary>
         </member>
-        <member name="M:EZ_B.Soundv4.PlayDataWait(System.IO.Stream,System.Decimal)">
+        <member name="M:EZ_B.EZBv4Sound.PlayDataWait(System.IO.Stream,System.Byte[],System.Decimal,System.Int32[],System.Int32)">
             <summary>
             Stream raw audio data to the EZ-B v4's speakers.
             0 is silent, 100 is normal, 200 is 2x gain, 300 is 3x gain, etc.
             The audio must be RAW 8 Bit at 18 KHZ Sample Rate
+            *Note: You must dispose of the memory stream yourself after calling this
             </summary>
         </member>
-        <member name="M:EZ_B.Soundv4.Stop">
+        <member name="M:EZ_B.EZBv4Sound.Stop">
             <summary>
             Stop the audio which is being played
             </summary>
         </member>
-        <member name="M:EZ_B.Soundv4.DisposeOverride">
+        <member name="M:EZ_B.EZBv4Sound.DisposeOverride">
             <summary>
             Dispose of the AutoPositioner
             </summary>
         </member>
-        <member name="T:EZ_B.Soundv4.OnAudioDataHandler">
+        <member name="T:EZ_B.EZBv4Sound.OnAudioDataHandler">
             <summary>
             Event exceuted when new data is being sent to the EZ-B
             </summary>
         </member>
-        <member name="T:EZ_B.Soundv4.OnVolumeChangedHandler">
+        <member name="T:EZ_B.EZBv4Sound.OnVolumeChangedHandler">
             <summary>
             Event executed when the volume value has changed
             </summary>
         </member>
-        <member name="T:EZ_B.Soundv4.OnStopPlayingHandler">
+        <member name="T:EZ_B.EZBv4Sound.OnStopPlayingHandler">
             <summary>
             Event executed when the audio has stopped playing
             </summary>
         </member>
-        <member name="T:EZ_B.Soundv4.OnStartPlayingHandler">
+        <member name="T:EZ_B.EZBv4Sound.OnStartPlayingHandler">
             <summary>
             Event executed when the audio has begun playing
             </summary>
         </member>
-        <member name="T:EZ_B.Soundv4.OnClippingStatusHandler">
+        <member name="T:EZ_B.EZBv4Sound.OnClippingStatusHandler">
             <summary>
             Event executed when the audio level is clipping. This means the volume value is amplifying the audio past the limits
             </summary>
         </member>
-        <member name="T:EZ_B.Soundv4.OnProgressHandler">
+        <member name="T:EZ_B.EZBv4Sound.OnProgressHandler">
             <summary>
             Event executed with the playing progress by sample position. The resolution of this event can be specified with Play method.
             In summary, you set the Play Positions by the sample index and this event will execute when the playing reaches that particular sample point.
             If you simply want an update of the curernt play time, use the OnPlayTime event.
             </summary>
         </member>
-        <member name="T:EZ_B.Soundv4.OnPlayTimeHandler">
+        <member name="T:EZ_B.EZBv4Sound.OnPlayTimeHandler">
             <summary>
             Event executed with the playing progress by sample position with 1000ms resolution.
             </summary>
@@ -2742,6 +2912,11 @@
             Set the saturation between -1f and 1f
             </summary>
         </member>
+        <member name="F:EZ_B.Camera.SharpenImage">
+            <summary>
+            Set the sharpening enhancement
+            </summary>
+        </member>
         <member name="F:EZ_B.Camera.Contrast">
             <summary>
             Set the contrast correction of the image.
@@ -2778,14 +2953,14 @@
             <summary>
             Initialize a camera in preperation for object detection. 
             The processedPreviewControl will act as display for the processed video. A System.Windows.Forms.Panel works great.
-            The VideoCaptureDevice must be a ValuePair, where the Key is what contains either the Moniker String for the Video Driver, or the device name if AR Drone or Brookstone Rover. Also, the Key can contain a URL to a JPEG.
+            The VideoCaptureDevice must be a ValuePair, where the Key is what contains either the Moniker String for the Video Driver, or the device name if AR Drone. Also, the Key can contain a URL to a JPEG.
             </summary>
         </member>
         <member name="M:EZ_B.Camera.StartCamera(EZ_B.ValuePair,System.Windows.Forms.Control,System.Int32,System.Int32)">
             <summary>
             Initialize a camera in preperation for object detection. 
             The processedPreviewControl will act as display for the processed video. A System.Windows.Forms.Panel works great.
-            The VideoCaptureDevice must be a ValuePair, where the Key is what contains either the Moniker String for the Video Driver, or the device name if AR Drone or Brookstone Rover. Also, the Key can contain a URL to a JPEG.
+            The VideoCaptureDevice must be a ValuePair, where the Key is what contains either the Moniker String for the Video Driver, or the device name if AR Drone. Also, the Key can contain a URL to a JPEG.
             </summary>
         </member>
         <member name="M:EZ_B.Camera.StartCamera(EZ_B.ValuePair,System.Windows.Forms.Control,System.Windows.Forms.Control,System.Int32,System.Int32)">
@@ -2794,7 +2969,7 @@
             The processedPreviewControl will act as display for the processed video. A System.Windows.Forms.Panel works great.
             JPEGStream can be specified with prefix HTTP.
             If you wish to provide your own video stream by calling SetCaptureImage, specify the videoCaptureDeviceName as "Custom".
-            The VideoCaptureDevice must be a ValuePair, where the Key is what contains either the Moniker String for the Video Driver, or the device name if AR Drone or Brookstone Rover. Also, the Key can contain a URL to a JPEG.    /// </summary>
+            The VideoCaptureDevice must be a ValuePair, where the Key is what contains either the Moniker String for the Video Driver, or the device name if AR Drone. Also, the Key can contain a URL to a JPEG.    /// </summary>
         </member>
         <member name="M:EZ_B.Camera.StopCamera">
             <summary>
@@ -2850,7 +3025,13 @@
         <member name="E:EZ_B.Camera.OnNewFrame">
             <summary>
             Event risen when a new video frame is received.
-            Once this event is risen, it will not be risen again until the UpdatePreview() is called
+            This event is risen BEFORE OnNewFrameProcessed
+            </summary>
+        </member>
+        <member name="E:EZ_B.Camera.OnNewFrameProcessed">
+            <summary>
+            Event risen when a new video frame is received.
+            This event is raised after OnNewFrame
             </summary>
         </member>
         <member name="P:EZ_B.Camera.GetPixelFormat">
@@ -2870,17 +3051,19 @@
         </member>
         <member name="P:EZ_B.Camera.GetCurrentBitmap">
             <summary>
-            Get the current video frame as a managed bitmap from the capture device.
+            Get the current video frame as a managed bitmap from the capture device. This is only populated within the CameraOnOnNewFrame() event.
+            Do not dispose this object! This means, do not use this in a USING ()
             </summary>
         </member>
         <member name="P:EZ_B.Camera.GetOutputBitmap">
             <summary>
-            Get the current video frame as an unmanaged bitmap from the capture device
+            Get the current video frame as an unmanaged bitmap from the capture device. This is only populated within the CameraOnOnNewFrame() event.
+            Do not dispose this object! This means, do not use this in a USING ()
             </summary>
         </member>
         <member name="P:EZ_B.Camera.SetPreviewControl">
             <summary>
-            Set the control that will be used for the video preview
+            Set the control that will be used for the video preview. This can be null if needed. The OnNewFrame event will still be raised, however it will not automatically draw the image to any control. You can use the GetOutputBitmap or GetCurrentBitmap to extract the image within the OnNewFrame event.
             </summary>
         </member>
         <member name="P:EZ_B.Camera.IsActive">
@@ -3194,51 +3377,6 @@
         <member name="P:EZ_B.ConfigurationManager.BluetoothName">
             <summary>
             Set the bluetooth name of the EZ-B. Max 10 characters, will be truncated.
-            </summary>
-        </member>
-        <member name="M:EZ_B.BrookstoneRover.RightStop">
-            <summary>
-            Stop the right wheels
-            </summary>
-        </member>
-        <member name="M:EZ_B.BrookstoneRover.RightForward(System.Byte)">
-            <summary>
-            Forward the right wheels at speed (0-16)
-            </summary>
-        </member>
-        <member name="M:EZ_B.BrookstoneRover.RightReverse(System.Byte)">
-            <summary>
-            Reverse right wheels (0-16 speed)
-            </summary>
-        </member>
-        <member name="M:EZ_B.BrookstoneRover.LeftStop">
-            <summary>
-            Stop the left wheel
-            </summary>
-        </member>
-        <member name="M:EZ_B.BrookstoneRover.LeftForward(System.Byte)">
-            <summary>
-            Forward the left wheel (speed: 0-16)
-            </summary>
-        </member>
-        <member name="M:EZ_B.BrookstoneRover.LeftReverse(System.Byte)">
-            <summary>
-            Reverse the left wheel (speed: 0-16)
-            </summary>
-        </member>
-        <member name="M:EZ_B.BrookstoneRover.Infrared(System.Boolean)">
-            <summary>
-            Turn on or off the infrared LED
-            </summary>
-        </member>
-        <member name="P:EZ_B.BrookstoneRover.RightSpeed">
-            <summary>
-            Set the speed of the right wheel
-            </summary>
-        </member>
-        <member name="P:EZ_B.BrookstoneRover.LeftSpeed">
-            <summary>
-            Set the speed of the left wheel
             </summary>
         </member>
         <member name="F:EZ_B.AutoPosition.Config">
@@ -4502,7 +4640,7 @@
             <summary>
             Start the JPEG Streamer with the specified URL and FPS.
             The FPS is dependent on the internet connection speed.
-            We usually use an FPS of 10.
+            We usually use an FPS of 10. Specify a value of -1 for unlimited FPS control
             </summary>
         </member>
         <member name="M:EZ_B.JPEGStream.Stop">
@@ -4614,31 +4752,6 @@
         <member name="P:EZ_B.EZ430.IsConnected">
             <summary>
             Are we connected to a eZ430 module?
-            </summary>
-        </member>
-        <member name="M:EZ_B.GPS.Start">
-            <summary>
-            Start the GPS
-            </summary>
-        </member>
-        <member name="M:EZ_B.GPS.Stop">
-            <summary>
-            Stop the GPS
-            </summary>
-        </member>
-        <member name="P:EZ_B.GPS.PortName">
-            <summary>
-            Set or Get the COM port of the GPS
-            </summary>
-        </member>
-        <member name="P:EZ_B.GPS.GPSData">
-            <summary>
-            Get the GPS data object of the most current data
-            </summary>
-        </member>
-        <member name="P:EZ_B.GPS.IsConnected">
-            <summary>
-            Are we connected to a gps module?
             </summary>
         </member>
         <member name="F:EZ_B.SabertoothSerial.SpeedLeftWheelForward">
@@ -4805,7 +4918,7 @@
         </member>
         <member name="M:EZ_B.PWM.SetPWM(EZ_B.Digital.DigitalPortEnum,System.Int32)">
             <summary>
-            Set the PWM Speed. The speed can be between PWM_MIN and PWM_MAX
+            Set the PWM Duty Cycle. The speed can be between PWM_MIN and PWM_MAX
             </summary>
         </member>
         <member name="M:EZ_B.PWM.GetPWM(EZ_B.Digital.DigitalPortEnum)">
@@ -6596,11 +6709,6 @@
             The type of tracking for this object
             </summary>
         </member>
-        <member name="F:EZ_B.ObjectLocation.IsObjectFound">
-            <summary>
-            True if an object was found.
-            </summary>
-        </member>
         <member name="F:EZ_B.ObjectLocation.Glyph">
             <summary>
             If Shape detect was used, this contains the glyph found
@@ -6626,11 +6734,14 @@
             The horizontal location of the object, if found.
             </summary>
         </member>
-        <member name="F:EZ_B.ObjectLocation.Rects">
+        <member name="F:EZ_B.ObjectLocation.ColorName">
             <summary>
-            Additional Rects.
-            Some detected objects will return multiple locations - for example Face or Custom HAAR tracking. They may return multiple locations which you can use.
-            If the IsObjectFound is true, then there may be multiple detections in this array.
+            If custom color tracking is used, this will contain the name of the color that was detected
+            </summary>
+        </member>
+        <member name="F:EZ_B.ObjectLocation.Rect">
+            <summary>
+            Contains the rectangle of the detected object
             </summary>
         </member>
         <member name="P:EZ_B.ObjectLocation.CenterX">
@@ -6758,6 +6869,13 @@
             Roomba supports a maximum of 15 notes.
             </summary>
         </member>
+        <member name="F:EZ_B.EZB.ConnectedEndPointAddress">
+            <summary>
+            The address of the current connection.
+            If this is an EZ-B v3, this will contain the com port.
+            If this is an EZ-B v4, this will contain the physical address.
+            </summary>
+        </member>
         <member name="F:EZ_B.EZB.EZBType">
             <summary>
             Gets the type of EZ-B that is connected
@@ -6879,11 +6997,6 @@
             Connect to an AR Drone for remote control
             </summary>
         </member>
-        <member name="F:EZ_B.EZB.BrookstoneRover">
-            <summary>
-            Connect to a Brookstone Rover for remote control
-            </summary>
-        </member>
         <member name="F:EZ_B.EZB.PWM">
             <summary>
             Control PWM (Pulse Wave Modulation) output
@@ -6917,11 +7030,6 @@
         <member name="F:EZ_B.EZB.RoboQuad">
             <summary>
             Control a WowWee RoboQuad
-            </summary>
-        </member>
-        <member name="F:EZ_B.EZB.GPS">
-            <summary>
-            Receive data from an a serial GPS unit
             </summary>
         </member>
         <member name="F:EZ_B.EZB.AutoPosition">
@@ -6959,6 +7067,11 @@
             Helper class for making synthesized music on the ez-b v4 speaker
             </summary>
         </member>
+        <member name="F:EZ_B.EZB.SerialRGBLed">
+            <summary>
+            Control the serial rgb led
+            </summary>
+        </member>
         <member name="M:EZ_B.EZB.#ctor(System.String)">
             <summary>
             Create an instance of the EZCommunicator and assign unique name
@@ -6985,14 +7098,21 @@
             </summary>
             <returns>List/Array of port names</returns>
         </member>
+        <member name="M:EZ_B.EZB.GetFirmwareVersionRaw">
+            <summary>
+            Returns the raw byte that reflects the firmware returned by the current connected EZ-B.
+            Do not use this, use the GetFirmwareVersion() instead.
+            </summary>
+            <returns></returns>
+        </member>
         <member name="M:EZ_B.EZB.GetFirmwareVersion">
             <summary>
             Return the firmware version in a string of the EZ-B
             </summary>
         </member>
-        <member name="M:EZ_B.EZB.GetFirmwareVersionRaw">
+        <member name="M:EZ_B.EZB.GetFirmwareVersionEnum">
             <summary>
-            Return the firmware version number of the EZ-B
+            Return the firmware version as the enum
             </summary>
         </member>
         <member name="M:EZ_B.EZB.PingController">
@@ -7088,6 +7208,13 @@
         <member name="P:EZ_B.EZB.LastCommandSentDateTime">
             <summary>
             Get the last datetime that data was sent to the EZ-B
+            </summary>
+        </member>
+        <member name="P:EZ_B.EZB.ReceiveThrottleMS">
+            <summary>
+            The original EZ-B v4.1/1 will suffer from its tcp dma buffer being flooded if data is sent/received too quickly.
+            Speciy a 1 millisecond delay between receive commands to ensure the EZ-B v4.1/1 can keep up.
+            *Warning: This feature will only work with the EZ-B v4.x/0 or EZ-B v4.x/1
             </summary>
         </member>
         <member name="E:EZ_B.EZB.OnConnectionChange">
@@ -7600,7 +7727,17 @@
             Compares Color A from Color B and returns the difference
             </summary>
         </member>
+        <member name="M:EZ_B.Functions.WithinRange(System.Int32,EZ_B.Functions.Range)">
+            <summary>
+            Returns true if the number falls within the high and low range
+            </summary>
+        </member>
         <member name="M:EZ_B.Functions.WithinRange(System.Decimal,EZ_B.Functions.Range)">
+            <summary>
+            Returns true if the number falls within the high and low range
+            </summary>
+        </member>
+        <member name="M:EZ_B.Functions.WithinRange(System.Double,EZ_B.Functions.Range)">
             <summary>
             Returns true if the number falls within the high and low range
             </summary>
@@ -7713,6 +7850,16 @@
             h is from 0-360
             s,v values are 0-1
             r,g,b values are 0-255
+            </summary>
+        </member>
+        <member name="M:EZ_B.Functions.ClampDouble(System.Double,System.Double,System.Double)">
+            <summary>
+            Clamp a value
+            </summary>
+        </member>
+        <member name="M:EZ_B.Functions.Clamp(System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Clamp a value to range
             </summary>
         </member>
         <member name="M:EZ_B.Functions.Clamp(System.Int32)">
@@ -8092,6 +8239,11 @@
             </summary>
         </member>
         <member name="M:EZ_B.Uart.SendSerial(EZ_B.Digital.DigitalPortEnum,EZ_B.Uart.BAUD_RATE_ENUM,System.Char[])">
+            <summary>
+            Send text over serial specified serial port at baud rate
+            </summary>
+        </member>
+        <member name="M:EZ_B.Uart.SendSerial(EZ_B.Digital.DigitalPortEnum,EZ_B.Uart.BAUD_RATE_ENUM,System.Byte)">
             <summary>
             Send text over serial specified serial port at baud rate
             </summary>
