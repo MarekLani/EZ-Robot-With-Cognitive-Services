@@ -46,11 +46,15 @@
             this.OneSecondTimer = new System.Windows.Forms.Timer(this.components);
             this.Video2GB = new System.Windows.Forms.GroupBox();
             this.Video2P = new System.Windows.Forms.Panel();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.HeadTrackingButton = new System.Windows.Forms.Button();
+            this.StartEZBButton = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.Video1GB.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.InfoGB.SuspendLayout();
             this.Video2GB.SuspendLayout();
+            this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -70,7 +74,7 @@
             this.IpAddressTB.Name = "IpAddressTB";
             this.IpAddressTB.Size = new System.Drawing.Size(124, 22);
             this.IpAddressTB.TabIndex = 1;
-            this.IpAddressTB.Text = "192.168.18.85";
+            this.IpAddressTB.Text = "192.168.18.53";
             // 
             // groupBox1
             // 
@@ -130,7 +134,7 @@
             // 
             // StartCameraButton
             // 
-            this.StartCameraButton.Location = new System.Drawing.Point(192, 18);
+            this.StartCameraButton.Location = new System.Drawing.Point(364, 15);
             this.StartCameraButton.Margin = new System.Windows.Forms.Padding(4);
             this.StartCameraButton.Name = "StartCameraButton";
             this.StartCameraButton.Size = new System.Drawing.Size(140, 28);
@@ -229,11 +233,47 @@
             this.Video2P.Size = new System.Drawing.Size(427, 295);
             this.Video2P.TabIndex = 0;
             // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.HeadTrackingButton);
+            this.groupBox2.Location = new System.Drawing.Point(576, 50);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(366, 107);
+            this.groupBox2.TabIndex = 14;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "More";
+            // 
+            // HeadTrackingButton
+            // 
+            this.HeadTrackingButton.Location = new System.Drawing.Point(19, 55);
+            this.HeadTrackingButton.Margin = new System.Windows.Forms.Padding(4);
+            this.HeadTrackingButton.Name = "HeadTrackingButton";
+            this.HeadTrackingButton.Size = new System.Drawing.Size(149, 28);
+            this.HeadTrackingButton.TabIndex = 10;
+            this.HeadTrackingButton.Tag = "Start Head Tracking|Stop Head Tracking";
+            this.HeadTrackingButton.Text = "Start Head Tracking";
+            this.HeadTrackingButton.UseVisualStyleBackColor = true;
+            this.HeadTrackingButton.Click += new System.EventHandler(this.HeadTrackingButton_Click);
+            // 
+            // StartEZBButton
+            // 
+            this.StartEZBButton.Location = new System.Drawing.Point(189, 15);
+            this.StartEZBButton.Margin = new System.Windows.Forms.Padding(4);
+            this.StartEZBButton.Name = "StartEZBButton";
+            this.StartEZBButton.Size = new System.Drawing.Size(140, 28);
+            this.StartEZBButton.TabIndex = 15;
+            this.StartEZBButton.Tag = "Connect to EZB|Disconnect from EZB";
+            this.StartEZBButton.Text = "Connect to EZB";
+            this.StartEZBButton.UseVisualStyleBackColor = true;
+            this.StartEZBButton.Click += new System.EventHandler(this.StartEZBButton_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(965, 750);
+            this.Controls.Add(this.StartEZBButton);
+            this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.Video2GB);
             this.Controls.Add(this.FpsLabel);
             this.Controls.Add(this.InfoGB);
@@ -255,6 +295,7 @@
             this.InfoGB.ResumeLayout(false);
             this.InfoGB.PerformLayout();
             this.Video2GB.ResumeLayout(false);
+            this.groupBox2.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -279,6 +320,9 @@
         private System.Windows.Forms.Panel Video2P;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Button StartOrStopVideoRecordingButton;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.Button HeadTrackingButton;
+        private System.Windows.Forms.Button StartEZBButton;
     }
 }
 
