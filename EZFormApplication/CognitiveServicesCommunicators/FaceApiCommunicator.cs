@@ -16,16 +16,15 @@ namespace EZFormApplication.CognitiveServicesCommunicators
     public class FaceApiCommunicator
     {
         private const string FaceApiEndpoint = "https://westeurope.api.cognitive.microsoft.com/face/v1.0/";
-        private static string faceApiKeyValue = "7aeb6c349d3b4155a9e00480b4e43ab7";
-        private static string emotionApiKeyValue = "62a9031e98ab4a55830db75794af98d3";
         private static List<FaceResult> personResults = new List<FaceResult>();
         private static DateTime lastFaceDetectTime = DateTime.MinValue;
 
-        static FaceServiceClient fsc = new FaceServiceClient(faceApiKeyValue, FaceApiEndpoint);
-        static EmotionServiceClient esc = new EmotionServiceClient(emotionApiKeyValue);
 
         public static async Task<(Face[] faces, Person person, Emotion[] emotions)> DetectAndIdentifyFace(Bitmap image)
         {
+            FaceServiceClient fsc = new FaceServiceClient(Settings.Instance.FaceApiKey, FaceApiEndpoint);
+            EmotionServiceClient esc = new EmotionServiceClient(Settings.Instance.EmotionApiKey);
+
             //FACE Detection
             //TODO add detection interval as param
             Emotion[] emotions = null;
@@ -72,18 +71,6 @@ namespace EZFormApplication.CognitiveServicesCommunicators
                 }
             }
             return (faces, person, emotions);
-        }
-
-        public static void SetFaceKey(string value)
-        {
-            faceApiKeyValue = value;
-            fsc = new FaceServiceClient(faceApiKeyValue, FaceApiEndpoint);
-        }
-
-        public static void SetEmotionKey(string value)
-        {
-            emotionApiKeyValue = value;
-            esc = new EmotionServiceClient(emotionApiKeyValue);
         }
     }
 
