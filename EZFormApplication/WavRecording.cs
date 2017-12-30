@@ -21,6 +21,7 @@ namespace EZFormApplication
                 return "Error code: " + result.ToString();
               
             }
+            //Setting specific settings for output wav format, so it meets requirements of Speaker Recognition service
             result = (MCIErrors)Record("set recsound time format ms alignment 2 bitspersample 16 samplespersec 16000 channels 1 bytespersec 88200", "", 0, 0);
             if (result != MCIErrors.NO_ERROR)
             {

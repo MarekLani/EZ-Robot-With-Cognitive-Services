@@ -284,7 +284,7 @@
             //Used when creating training dataset
             //currentBitmap.Save(Guid.NewGuid().ToString() + ".jpg", ImageFormat.Jpeg);
 
-            var cvc = new CustomVisionCommunicator(Settings.Instance.PredictionKey, Settings.Instance.VisionApiKey,Settings.Instance.VisionApiProjectId, Settings.Instance.VisionApiIterationId);
+            var cvc = new CustomVisionCommunicator();
             var predictions = cvc.RecognizeObject(currentBitmap);
             if (predictions.Where(p => p.Tag == objectName).First().Probability > 0.7)
                 return true;
@@ -461,7 +461,7 @@
         {
             this.ezb.Servo.SetServoPosition(HeadServoVerticalPort, mapPortToServoLimits[HeadServoVerticalPort].MinPosition + 55);
 
-            //Stroing images for training dataset
+            //Storing images for training dataset
             //var currentBitmap = camera.GetCurrentBitmap;
             //currentBitmap.Save(Guid.NewGuid().ToString() + ".jpg", ImageFormat.Jpeg);
 
@@ -479,7 +479,7 @@
             var faceLocations = this.camera.CameraFaceDetection.GetFaceDetection(32, 1000, 1);
             if (faceLocations.Length > 0)
             {
-                //DO Face detection
+                //DO Local Face detection, only once per second
                 if (this.fpsCounter == 1)
                 {
                     foreach (var objectLocation in faceLocations)
@@ -489,6 +489,7 @@
                 }
             }
 
+            //If no face return
             if (faceLocations.Length == 0)
             {
                 return;
@@ -500,6 +501,7 @@
             var servoVerticalPosition = this.ezb.Servo.GetServoPosition(HeadServoVerticalPort);
             var servoHorizontalPosition = this.ezb.Servo.GetServoPosition(HeadServoHorizontalPort);
 
+            //Track face
             var yDiff = faceLocation.CenterY - CameraHeight / 2;
             if (Math.Abs(yDiff) > YDiffMargin)
             {
@@ -547,11 +549,14 @@
 
             (var faces, var person, var emotions) = await FaceApiCommunicator.DetectAndIdentifyFace(currentBitmap);
 
+            //If Face API identified person and if ezrobot is not speaking
             if (person != null && !ezb.SoundV4.IsPlaying)
             {
+                //If identified person seems to be sad
                 if (emotions[0].Scores.Sadness > 0.02)
                 {
                     ezb.SoundV4.PlayData(ezb.SpeechSynth.SayToStream("You look bit sad, but I have something to cheer you up. A joke! Here it is: My dog used to chase people on a bike a lot. It got so bad, finally I had to take his bike away."));
+                    //Wait for robot to finish speaking
                     Thread.Sleep(25000);
                 }
                 else
@@ -560,7 +565,8 @@
                     Wave();
                 }             
             }
-            else if (faces != null && faces.Any())
+            //if no identified person but detected faces
+            else if (faces != null && faces.Any() && !ezb.SoundV4.IsPlaying)
             {
                 if (faces[0].FaceAttributes.Gender == "male")
                     ezb.SoundV4.PlayData(ezb.SpeechSynth.SayToStream("Hello mister stranger your age is probably " + faces[0].FaceAttributes.Age));
@@ -661,6 +667,7 @@
 
                         ezb.SoundV4.PlayData(ezb.SpeechSynth.SayToStream("Hello stranger"));
 
+                        //Wait for robot to finish speaking
                         await Task.Delay(5000);
                         wavePosition.Stop();
                         ezb.Servo.ReleaseAllServos();
@@ -676,7 +683,6 @@
                 ListenButton.Text = "Recognize Voice";
 
             }
-
         }
 
 
@@ -751,16 +757,15 @@
 
                 case "ComputerVision":
                     {
-                        await Task.Delay(1000);
                         var currentBitmap = camera.GetCurrentBitmap;
-                        //currentBitmap.Save(Guid.NewGuid().ToString() + ".jpg", ImageFormat.Jpeg);
-                        var cvc = new CustomVisionCommunicator(Settings.Instance.PredictionKey, Settings.Instance.VisionApiKey, Settings.Instance.VisionApiProjectId, Settings.Instance.VisionApiIterationId);
+                        var cvc = new ComputerVisionCommunicator();
                         var description = await cvc.RecognizeObjectsInImage(currentBitmap);
                         ezb.SoundV4.PlayData(ezb.SpeechSynth.SayToStream(description));
                         break;
                     }
                 case "FindScrewdriver":
                     {
+                        ezb.SpeechSynth.Say("Text to say");
                         //We are trying to find screwdriver, first in front, then on the right, last on the left 
                         ezb.SoundV4.PlayData(ezb.SpeechSynth.SayToStream("I am on it"));
                         this.ezb.Servo.SetServoPosition(HeadServoHorizontalPort, mapPortToServoLimits[HeadServoHorizontalPort].CenterPosition);
@@ -811,7 +816,7 @@
                         ezb.SoundV4.PlayData(ezb.SpeechSynth.SayToStream(("Yes I am always hungry! I would have an oil!")));
                         var currentBitmap = camera.GetCurrentBitmap;
 
-                        var cvc = new CustomVisionCommunicator(Settings.Instance.PredictionKey, Settings.Instance.VisionApiKey, Settings.Instance.VisionApiProjectId, Settings.Instance.VisionApiIterationId);
+                        var cvc = new CustomVisionCommunicator();
                         var predictions = cvc.RecognizeObject(currentBitmap);
                         if (RecognizeObject("oil"))
                         {

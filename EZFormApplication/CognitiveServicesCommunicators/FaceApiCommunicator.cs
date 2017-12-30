@@ -1,5 +1,4 @@
-﻿using Microsoft.ProjectOxford.Common;
-using Microsoft.ProjectOxford.Common.Contract;
+﻿using Microsoft.ProjectOxford.Common.Contract;
 using Microsoft.ProjectOxford.Emotion;
 using Microsoft.ProjectOxford.Face;
 using Microsoft.ProjectOxford.Face.Contract;
@@ -50,16 +49,21 @@ namespace EZFormApplication.CognitiveServicesCommunicators
                     var rec = new Microsoft.ProjectOxford.Common.Rectangle[] { faces.First().FaceRectangle.ToRectangle() };
                     //Emotions
 
-                    //We need to seek to begin
+                    //We need to seek to begin, due to problems with parallel access we needed to create new memory stream
                     memoryStream = new MemoryStream();
                     image.Save(memoryStream, System.Drawing.Imaging.ImageFormat.Jpeg);
                     memoryStream.Seek(0, SeekOrigin.Begin);
+
+                    //We call Emotion API and we include face rectangle information,
+                    //as this way the call is cheaper, as emotion api does not have to run face detection
                     emotions = await esc.RecognizeAsync(memoryStream, rec);
 
 
-                    //Identification
+                    //Person Identification
                     var groups = await fsc.ListPersonGroupsAsync();
                     var groupId = groups.First().PersonGroupId;
+
+                    //We are interested only in first candidate
                     var identifyResult = await fsc.IdentifyAsync(groupId, new Guid[] { faces.First().FaceId }, 1);
                     var candidate = identifyResult?.FirstOrDefault()?.Candidates?.FirstOrDefault();
 

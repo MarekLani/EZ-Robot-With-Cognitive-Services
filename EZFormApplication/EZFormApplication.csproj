@@ -147,6 +147,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Autoposition.cs" />
+    <Compile Include="CognitiveServicesCommunicators\ComputerVision.cs" />
     <Compile Include="CognitiveServicesCommunicators\CustomVisionCommunicator.cs" />
     <Compile Include="CognitiveServicesCommunicators\FaceApiCommunicator.cs" />
     <Compile Include="CognitiveServicesCommunicators\SpeakerRecognitionCommunicator.cs" />

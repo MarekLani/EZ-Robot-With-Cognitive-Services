@@ -1,0 +1,102 @@
+{
+  "luis_schema_version": "2.1.0",
+  "versionId": "0.1",
+  "name": "EZRobotEu",
+  "desc": "",
+  "culture": "en-us",
+  "intents": [
+    {
+      "name": "ComputerVision"
+    },
+    {
+      "name": "FindScrewdriver"
+    },
+    {
+      "name": "Hungry"
+    },
+    {
+      "name": "None"
+    },
+    {
+      "name": "TrackFace"
+    }
+  ],
+  "entities": [],
+  "composites": [],
+  "closedLists": [],
+  "bing_entities": [],
+  "model_features": [],
+  "regex_features": [],
+  "utterances": [
+    {
+      "text": "are you hungry?",
+      "intent": "Hungry",
+      "entities": []
+    },
+    {
+      "text": "track face",
+      "intent": "TrackFace",
+      "entities": []
+    },
+    {
+      "text": "start face tracking",
+      "intent": "TrackFace",
+      "entities": []
+    },
+    {
+      "text": "face tracking",
+      "intent": "TrackFace",
+      "entities": []
+    },
+    {
+      "text": "what do you see?",
+      "intent": "ComputerVision",
+      "entities": []
+    },
+    {
+      "text": "what is around you?",
+      "intent": "ComputerVision",
+      "entities": []
+    },
+    {
+      "text": "describe what do you see",
+      "intent": "ComputerVision",
+      "entities": []
+    },
+    {
+      "text": "where is screwdriver?",
+      "intent": "FindScrewdriver",
+      "entities": []
+    },
+    {
+      "text": "screwdriver",
+      "intent": "FindScrewdriver",
+      "entities": []
+    },
+    {
+      "text": "find screwdriver",
+      "intent": "FindScrewdriver",
+      "entities": []
+    },
+    {
+      "text": "search for screwdriver",
+      "intent": "FindScrewdriver",
+      "entities": []
+    },
+    {
+      "text": "do you want something to eat?",
+      "intent": "Hungry",
+      "entities": []
+    },
+    {
+      "text": "do you want some food?",
+      "intent": "Hungry",
+      "entities": []
+    },
+    {
+      "text": "hungry?",
+      "intent": "Hungry",
+      "entities": []
+    }
+  ]
+}

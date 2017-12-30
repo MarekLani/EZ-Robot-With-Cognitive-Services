@@ -16,12 +16,14 @@ namespace EZFormApplication.CognitiveServicesCommunicators
             var srsc = new SpeakerIdentificationServiceClient(Settings.Instance.SpeakerRecognitionApiKeyValue);
             var profiles = await srsc.GetProfilesAsync();
 
+            //First we choose set of profiles we want to try match speaker of narration with
             Guid[] testProfileIds = new Guid[profiles.Length];
             for (int i = 0; i < testProfileIds.Length; i++)
             {
                 testProfileIds[i] = profiles[i].ProfileId;
             }
 
+            //IdentifyAsync is longer operation so we need to implement result polling mechanism
             OperationLocation processPollingLocation;
             using (Stream audioStream = File.OpenRead(recordingFileName))
             {
@@ -32,6 +34,7 @@ namespace EZFormApplication.CognitiveServicesCommunicators
             int numOfRetries = 10;
             TimeSpan timeBetweenRetries = TimeSpan.FromSeconds(5.0);
 
+            //
             while (numOfRetries > 0)
             {
                 await Task.Delay(timeBetweenRetries);
