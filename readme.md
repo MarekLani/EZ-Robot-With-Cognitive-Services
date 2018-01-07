@@ -11,6 +11,8 @@ Application is based on existing [Windows Form project](https://github.com/ppedr
 - **Computer vision** - EZ Robot is able to provide description of environment it sees
 - **Custom object recognition** - EZ Robot is able to recognize specific objects, if they are placed in its vision field
 
+You can find video demonstration of robot's cognitive abilities in [this video](https://youtu.be/vf89wZiuzzE).
+
 ## Working with EZ Robot SDK
 
 Further in this document we shortly discuss how we utilize JD Robots SDK and also scenarios implemented using Cognitive Services in deeper detail.

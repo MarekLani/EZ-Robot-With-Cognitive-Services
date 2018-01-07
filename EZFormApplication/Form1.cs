@@ -14,6 +14,7 @@
     using Microsoft.CognitiveServices.SpeechRecognition;
     using Newtonsoft.Json.Linq;
     using static EZFormApplication.RobotSettings;
+    using System.Drawing.Imaging;
 
     public partial class Form1 : Form
     {
@@ -133,6 +134,8 @@
             }
         }
 
+        delegate void SetPropCallback(string text);
+
         private void ToggleFaceRecognition(object sender, EventArgs e)
         {
             //to avoid concurrency issues
@@ -146,7 +149,18 @@
                 this.WriteDebug("Error Exception=" + ex);
             }
 
-            this.StartCameraButton.Enabled = false;
+            if (this.StartCameraButton.InvokeRequired)
+            {
+                BeginInvoke((Action)(() =>
+                {
+                    this.StartCameraButton.Enabled = false;
+                }));
+            }
+            else
+            {
+                this.StartCameraButton.Enabled = false;
+            }
+            
 
             var button = HeadTrackingButton;
             var labels = button.Tag.ToString().Split(new[] { '|' });
@@ -156,7 +170,17 @@
                 this.headTrackingActive = false;
                 this.WriteDebug("Stopping Head Tracking.");
 
-                button.Text = labels[0];
+                if (button.InvokeRequired)
+                {
+                    BeginInvoke((Action)(() =>
+                    {
+                        button.Text = labels[0];
+                    }));
+                }
+                else
+                {
+                    button.Text = labels[0];
+                }
             }
             else
             {
@@ -176,7 +200,19 @@
 
                     this.headTrackingActive = true;
                     this.WriteDebug("Starting Head Tracking.");
-                    button.Text = labels[1];
+
+                    if (button.InvokeRequired)
+                    {
+                        BeginInvoke((Action)(() =>
+                        {
+                            button.Text = labels[1];
+                        }));
+                    }
+                    else
+                    {
+                        button.Text = labels[1];
+                    }
+                    
                 }
             }
         }
@@ -459,13 +495,13 @@
 
         private void HeadTrackingButton_Click(object sender, EventArgs e)
         {
-            this.ezb.Servo.SetServoPosition(HeadServoVerticalPort, mapPortToServoLimits[HeadServoVerticalPort].MinPosition + 55);
+            //this.ezb.Servo.SetServoPosition(HeadServoVerticalPort, mapPortToServoLimits[HeadServoVerticalPort].MinPosition + 55);
 
             //Storing images for training dataset
-            //var currentBitmap = camera.GetCurrentBitmap;
-            //currentBitmap.Save(Guid.NewGuid().ToString() + ".jpg", ImageFormat.Jpeg);
+            var currentBitmap = camera.GetCurrentBitmap;
+            currentBitmap.Save(Guid.NewGuid().ToString() + ".jpg", ImageFormat.Jpeg);
 
-            ToggleFaceRecognitionEvent?.Invoke(this, null);
+           // ToggleFaceRecognitionEvent?.Invoke(this, null);
         }
 
         private async void HeadTracking()
@@ -555,7 +591,7 @@
                 //If identified person seems to be sad
                 if (emotions[0].Scores.Sadness > 0.02)
                 {
-                    ezb.SoundV4.PlayData(ezb.SpeechSynth.SayToStream("You look bit sad, but I have something to cheer you up. A joke! Here it is: My dog used to chase people on a bike a lot. It got so bad, finally I had to take his bike away."));
+                    ezb.SoundV4.PlayData(ezb.SpeechSynth.SayToStream("You look bit sad, but I have something to cheer you up. A joke! Here it is: My dog used to chase people on a bike a lot. It got so bad, finally I had to take his bike away. Ha Ha Ha"));
                     //Wait for robot to finish speaking
                     Thread.Sleep(25000);
                 }
@@ -765,7 +801,6 @@
                     }
                 case "FindScrewdriver":
                     {
-                        ezb.SpeechSynth.Say("Text to say");
                         //We are trying to find screwdriver, first in front, then on the right, last on the left 
                         ezb.SoundV4.PlayData(ezb.SpeechSynth.SayToStream("I am on it"));
                         this.ezb.Servo.SetServoPosition(HeadServoHorizontalPort, mapPortToServoLimits[HeadServoHorizontalPort].CenterPosition);
@@ -790,7 +825,7 @@
                             //squatGrabPosition.StartAction_Grab();
                             //Reverse();
                             //TurnLeft();
-                            ezb.SoundV4.PlayData(ezb.SpeechSynth.SayToStream("Screwdriver is on the left side of me."));
+                            ezb.SoundV4.PlayData(ezb.SpeechSynth.SayToStream("Screwdriver is on my left side"));
                             return;
                         }
 
@@ -803,7 +838,7 @@
                             //squatGrabPosition.StartAction_Grab();
                             //Reverse();
                             //TurnRight();
-                            ezb.SoundV4.PlayData(ezb.SpeechSynth.SayToStream("Screwdriver is on the right side of me."));
+                            ezb.SoundV4.PlayData(ezb.SpeechSynth.SayToStream("Screwdriver is on my right side."));
 
                             return;
                         }
@@ -822,10 +857,10 @@
                         {
                             grabPosition.StartAction_Takefood();
                             await Task.Delay(1000);
-                            ezb.SoundV4.PlayData(ezb.SpeechSynth.SayToStream(("Hmm oil")));
+                            ezb.SoundV4.PlayData(ezb.SpeechSynth.SayToStream("Hmm oil"));
                         }
                         else
-                            ezb.SpeechSynth.Say("I do not eat this");
+                            ezb.SoundV4.PlayData(ezb.SpeechSynth.SayToStream("I do not eat this"));
                         break;
                     }
                 default: break;
