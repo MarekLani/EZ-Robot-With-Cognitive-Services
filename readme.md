@@ -11,7 +11,11 @@ Application is based on existing [Windows Form project](https://github.com/ppedr
 - **Computer vision** - EZ Robot is able to provide description of environment it sees
 - **Custom object recognition** - EZ Robot is able to recognize specific objects, if they are placed in its vision field
 
-You can find video demonstration of robot's cognitive abilities in [this video](https://youtu.be/vf89wZiuzzE).
+You can find video demonstration of robot's cognitive abilities in this video.
+
+[![EZ ROBOT with Cognitive Services](http://img.youtube.com/vi/vf89wZiuzzE/0.jpg)](https://youtu.be/vf89wZiuzzE)
+
+
 
 ## Working with EZ Robot SDK
 
