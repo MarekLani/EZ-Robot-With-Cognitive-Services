@@ -61,7 +61,7 @@ namespace EZFormApplication.CognitiveServicesCommunicators
 
                     //Person Identification
                     var groups = await fsc.ListPersonGroupsAsync();
-                    var groupId = groups.First().PersonGroupId;
+                    var groupId = groups.Where(g => g.Name== "robotGroup").First().PersonGroupId;
 
                     //We are interested only in first candidate
                     var identifyResult = await fsc.IdentifyAsync(groupId, new Guid[] { faces.First().FaceId }, 1);

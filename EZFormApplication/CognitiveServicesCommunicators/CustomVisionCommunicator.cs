@@ -27,6 +27,7 @@ namespace EZFormApplication.CognitiveServicesCommunicators
         public CustomVisionCommunicator()
         {
             this.visionApiKey = Settings.Instance.VisionApiKey;
+
             this.predictionKey = Settings.Instance.PredictionKey;
             this.projectId = new Guid(Settings.Instance.VisionApiProjectId);
 
@@ -36,11 +37,13 @@ namespace EZFormApplication.CognitiveServicesCommunicators
             
             //Create a prediction endpoint, passing in a prediction credentials object that contains the obtained prediction key
             endpoint = new PredictionEndpoint(predictionEndpointCredentials);
+
+
             vsc   = new VisionServiceClient(visionApiKey, "https://westeurope.api.cognitive.microsoft.com/vision/v1.0");
         }
      
 
-        public  List<ImageTagPrediction> RecognizeObject(Bitmap image)
+        public  List<ImageTagPrediction> GetListOfPredictions(Bitmap image)
         {
             MemoryStream memoryStream = new MemoryStream();
             image.Save(memoryStream, System.Drawing.Imaging.ImageFormat.Jpeg);

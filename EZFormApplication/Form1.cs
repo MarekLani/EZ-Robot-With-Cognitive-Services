@@ -24,6 +24,8 @@
 
         //Robot Positions
         private WavePositions wavePosition;
+        private HeadRightUpPositions headRightUp;
+        private HeadLeftUpPositions headLeftUp;
         private GrabPositions grabPosition;
         private SquatGrabPositions squatGrabPosition;
         private LeftPositions leftPosition;
@@ -321,7 +323,7 @@
             //currentBitmap.Save(Guid.NewGuid().ToString() + ".jpg", ImageFormat.Jpeg);
 
             var cvc = new CustomVisionCommunicator();
-            var predictions = cvc.RecognizeObject(currentBitmap);
+            var predictions = cvc.GetListOfPredictions(currentBitmap);
             if (predictions.Where(p => p.Tag == objectName).First().Probability > 0.7)
                 return true;
             else
@@ -398,6 +400,8 @@
                 forwardPosition = new ForwardPositions(ezb);
                 reversePosition = new ReversePositions(ezb);
                 leftHandPosition = new LeftHandPositions(ezb);
+                headRightUp = new HeadRightUpPositions(ezb);
+                headLeftUp = new HeadLeftUpPositions(ezb);
 
                 this.WriteDebug("Connected to EZB");
 
@@ -589,15 +593,17 @@
             if (person != null && !ezb.SoundV4.IsPlaying)
             {
                 //If identified person seems to be sad
-                if (emotions[0].Scores.Sadness > 0.02)
+                if (emotions[0].Scores.Sadness > 1)
                 {
-                    ezb.SoundV4.PlayData(ezb.SpeechSynth.SayToStream("You look bit sad, but I have something to cheer you up. A joke! Here it is: My dog used to chase people on a bike a lot. It got so bad, finally I had to take his bike away. Ha Ha Ha"));
+                    ezb.SpeechSynth.Say("You look bit sad, but I have something to cheer you up. A joke! Here it is: My dog used to chase people on a bike a lot. It got so bad, finally I had to take his bike away. Ha Ha Ha");
+                    //ezb.SoundV4.PlayData(ezb.SpeechSynth.SayToStream("You look bit sad, but I have something to cheer you up. A joke! Here it is: My dog used to chase people on a bike a lot. It got so bad, finally I had to take his bike away. Ha Ha Ha"));
                     //Wait for robot to finish speaking
                     Thread.Sleep(25000);
                 }
                 else
                 {
-                    ezb.SoundV4.PlayData(ezb.SpeechSynth.SayToStream("Hello " + person.Name));
+                    ezb.SpeechSynth.Say("Hello " + person.Name);
+                    //ezb.SoundV4.PlayData(ezb.SpeechSynth.SayToStream("Hello " + person.Name));
                     Wave();
                 }             
             }
@@ -605,9 +611,12 @@
             else if (faces != null && faces.Any() && !ezb.SoundV4.IsPlaying)
             {
                 if (faces[0].FaceAttributes.Gender == "male")
-                    ezb.SoundV4.PlayData(ezb.SpeechSynth.SayToStream("Hello mister stranger your age is probably " + faces[0].FaceAttributes.Age));
+                    ezb.SpeechSynth.Say("Hello mister stranger your age is probably " + faces[0].FaceAttributes.Age);
+                    //ezb.SpeechSynth.Say("Hello mister stranger your age is probably " + faces[0].FaceAttributes.Age);
+                //ezb.SoundV4.PlayData(ezb.SpeechSynth.SayToStream("Hello mister stranger your age is probably " + faces[0].FaceAttributes.Age));
                 else
-                    ezb.SoundV4.PlayData(ezb.SpeechSynth.SayToStream("Hello misses stranger your age is probably " + faces[0].FaceAttributes.Age));
+                    ezb.SpeechSynth.Say("Hello misses stranger your age is probably " + faces[0].FaceAttributes.Age);
+                    //ezb.SoundV4.PlayData(ezb.SpeechSynth.SayToStream("Hello misses stranger your age is probably " + faces[0].FaceAttributes.Age));
                 Wave();
             }
         }
@@ -619,6 +628,20 @@
             wavePosition.StartAction_Wave();
             await Task.Delay(5000);
             wavePosition.Stop();
+            ezb.Servo.ReleaseAllServos();
+        }
+
+        private  void HeadRightUp()
+        {
+            headRightUp.StartAction_Headrightup();
+            
+            ezb.Servo.ReleaseAllServos();
+        }
+
+        private void HeadLeftUp()
+        {
+            headLeftUp.StartAction_headleftup();
+
             ezb.Servo.ReleaseAllServos();
         }
 
@@ -690,7 +713,8 @@
                         wavePosition.StartAction_Wave();
 
                         var name = Speakers.ListOfSpeakers.Where(s => s.ProfileId == identificationResponse.ProcessingResult.IdentifiedProfileId.ToString()).First().Name;
-                        ezb.SoundV4.PlayData(ezb.SpeechSynth.SayToStream("Hello " + name));
+                        ezb.SpeechSynth.Say("Hello " + name);
+                        //ezb.SoundV4.PlayData(ezb.SpeechSynth.SayToStream("Hello " + name));
 
                         await Task.Delay(5000);
                         wavePosition.Stop();
@@ -701,7 +725,8 @@
                         WriteDebug("Speaker Identification Error: " + ex.Message);
                         wavePosition.StartAction_Wave();
 
-                        ezb.SoundV4.PlayData(ezb.SpeechSynth.SayToStream("Hello stranger"));
+                        ezb.SpeechSynth.Say("Hello stranger");
+                        //ezb.SoundV4.PlayData(ezb.SpeechSynth.SayToStream("Hello stranger"));
 
                         //Wait for robot to finish speaking
                         await Task.Delay(5000);
@@ -730,7 +755,9 @@
         ///Introduction
         private async void button1_Click(object sender, EventArgs e)
         {
-            ezb.SoundV4.PlayData(ezb.SpeechSynth.SayToStream("Hello I am EZ Robot and today together with my assistant Marek, we are going to show you my artificial intelligence."));
+            ezb.SpeechSynth.Say("Hello I am EZ Robot and today together with my assistant Marek, we are going to show you my artificial intelligence.");
+
+            //ezb.SoundV4.PlayData(ezb.SpeechSynth.SayToStream("Hello I am EZ Robot and today together with my assistant Marek, we are going to show you my artificial intelligence."));
             await Task.Delay(3000);
             leftHandPosition.StartAction_Lefthandup();
             await Task.Delay(4000);
@@ -741,9 +768,19 @@
         //Objection
         private async void button2_Click(object sender, EventArgs e)
         {
-            ezb.SoundV4.PlayData(ezb.SpeechSynth.SayToStream("Heey, what do you mean by that?"));
+            ezb.SpeechSynth.Say("Hey, what do you mean by that?");
+            HeadRightUp();
+            //ezb.SoundV4.PlayData(ezb.SpeechSynth.SayToStream("Heey, what do you mean by that?"));
             await Task.Delay(4000);
         }
+        private async void button3_Click(object sender, EventArgs e)
+        {
+            ezb.SpeechSynth.Say("Hey, what do you mean by that?");
+            HeadLeftUp();
+            //ezb.SoundV4.PlayData(ezb.SpeechSynth.SayToStream("Heey, what do you mean by that?"));
+            await Task.Delay(4000);
+        }
+
 
 
         #region CommandRecognition
@@ -775,97 +812,128 @@
         /// <param name="e">The <see cref="SpeechIntentEventArgs"/> instance containing the event data.</param>
         private async void OnIntentHandler(object sender, SpeechIntentEventArgs e)
         {
-
-            WriteDebug("--- Intent received by OnIntentHandler() ---");
-            WriteDebug(e.Payload);
-            dynamic intenIdentificationResult = JObject.Parse(e.Payload);
-            var res = intenIdentificationResult["topScoringIntent"];
-            var intent = Convert.ToString(res["intent"]);
-
-            switch (intent)
+            try
             {
-                case "TrackFace":
-                    {
-                        ToggleFaceRecognitionEvent?.Invoke(this, null);
-                        break;
-
-                    }
-
-                case "ComputerVision":
-                    {
-                        var currentBitmap = camera.GetCurrentBitmap;
-                        var cvc = new ComputerVisionCommunicator();
-                        var description = await cvc.RecognizeObjectsInImage(currentBitmap);
-                        ezb.SoundV4.PlayData(ezb.SpeechSynth.SayToStream(description));
-                        break;
-                    }
-                case "FindScrewdriver":
-                    {
-                        //We are trying to find screwdriver, first in front, then on the right, last on the left 
-                        ezb.SoundV4.PlayData(ezb.SpeechSynth.SayToStream("I am on it"));
-                        this.ezb.Servo.SetServoPosition(HeadServoHorizontalPort, mapPortToServoLimits[HeadServoHorizontalPort].CenterPosition);
-                        this.ezb.Servo.SetServoPosition(HeadServoVerticalPort, mapPortToServoLimits[HeadServoVerticalPort].MinPosition + 55);
-                        await Task.Delay(1000);
-                        if (RecognizeObject("screwdriver"))
+                WriteDebug("--- Intent received by OnIntentHandler() ---");
+                WriteDebug(e.Payload);
+                dynamic intenIdentificationResult = JObject.Parse(e.Payload);
+                if (intenIdentificationResult != null)
+                {
+                    var res = intenIdentificationResult["topScoringIntent"];
+                    var intent = Convert.ToString(res["intent"]);
+                    if (intent != null)
+                        switch (intent)
                         {
-                            //Forward();
-                            //squatGrabPosition.StartAction_Grab();
-                            //Reverse();
-                            ////Grab
+                            case "TrackFace":
+                                {
+                                    ToggleFaceRecognitionEvent?.Invoke(this, null);
+                                    break;
 
-                            ezb.SoundV4.PlayData(ezb.SpeechSynth.SayToStream("Screwdriver is in front of me"));
-                            return;
+                                }
+
+                            case "DetectObject":
+                                {
+
+                                    var objectString = Convert.ToString(intenIdentificationResult["entities"][0]["entity"]);
+                                    if (RecognizeObject(objectString))
+                                    {
+                                        //ezb.SpeechSynth.Say("I see " + objectString);
+                                        ezb.SoundV4.PlayData(ezb.SpeechSynth.SayToStream("I see " + objectString));
+
+                                        return;
+                                    }
+                                    break;
+                                }
+
+                            case "ComputerVision":
+                                {
+                                    var currentBitmap = camera.GetCurrentBitmap;
+                                    var cvc = new ComputerVisionCommunicator();
+                                    var description = await cvc.RecognizeObjectsInImage(currentBitmap);
+                                    ezb.SpeechSynth.Say(description);
+                                    //ezb.SoundV4.PlayData(ezb.SpeechSynth.SayToStream(description));
+                                    break;
+                                }
+                            case "FindScrewdriver":
+                                {
+                                    //We are trying to find screwdriver, first in front, then on the right, last on the left 
+                                    ezb.SpeechSynth.Say("I am on it");
+                                    //ezb.SoundV4.PlayData(ezb.SpeechSynth.SayToStream("I am on it"));
+                                    this.ezb.Servo.SetServoPosition(HeadServoHorizontalPort, mapPortToServoLimits[HeadServoHorizontalPort].CenterPosition);
+                                    this.ezb.Servo.SetServoPosition(HeadServoVerticalPort, mapPortToServoLimits[HeadServoVerticalPort].MinPosition + 55);
+                                    await Task.Delay(1000);
+                                    if (RecognizeObject("screwdriver"))
+                                    {
+                                        //Forward();
+                                        //squatGrabPosition.StartAction_Grab();
+                                        //Reverse();
+                                        ////Grab
+
+                                        ezb.SpeechSynth.Say("Screwdriver is in front of me");
+                                        //ezb.SoundV4.PlayData(ezb.SpeechSynth.SayToStream("Screwdriver is in front of me"));
+                                        return;
+                                    }
+                                    this.ezb.Servo.SetServoPosition(HeadServoHorizontalPort, mapPortToServoLimits[HeadServoHorizontalPort].CenterPosition + 45);
+                                    await Task.Delay(1000);
+                                    if (RecognizeObject("screwdriver"))
+                                    {
+                                        //TurnRight();
+                                        //Forward();
+                                        //squatGrabPosition.StartAction_Grab();
+                                        //Reverse();
+                                        //TurnLeft();
+                                        ezb.SpeechSynth.Say("Screwdriver is on my left side");
+                                        //ezb.SoundV4.PlayData(ezb.SpeechSynth.SayToStream("Screwdriver is on my left side"));
+                                        return;
+                                    }
+
+                                    this.ezb.Servo.SetServoPosition(HeadServoHorizontalPort, mapPortToServoLimits[HeadServoHorizontalPort].CenterPosition - 45);
+                                    await Task.Delay(1000);
+                                    if (RecognizeObject("screwdriver"))
+                                    {
+                                        //TurnLeft();
+                                        //Forward();
+                                        //squatGrabPosition.StartAction_Grab();
+                                        //Reverse();
+                                        //TurnRight();
+                                        ezb.SpeechSynth.Say("Screwdriver is on my right side.");
+                                        //ezb.SoundV4.PlayData(ezb.SpeechSynth.SayToStream("Screwdriver is on my right side."));
+
+                                        return;
+                                    }
+
+                                    break;
+                                }
+                           
+                            case "Hungry":
+                                {
+
+                                    ezb.SpeechSynth.Say("Yes I am always hungry!I would have an oil!");
+                                    //ezb.SoundV4.PlayData(ezb.SpeechSynth.SayToStream(("Yes I am always hungry! I would have an oil!")));
+                                    var currentBitmap = camera.GetCurrentBitmap;
+
+                                    var cvc = new CustomVisionCommunicator();
+                                    var predictions = cvc.GetListOfPredictions(currentBitmap);
+                                    if (RecognizeObject("oil"))
+                                    {
+                                        grabPosition.StartAction_Takefood();
+                                        await Task.Delay(1000);
+
+                                        ezb.SpeechSynth.Say("Hmm oil");
+                                        //ezb.SoundV4.PlayData(ezb.SpeechSynth.SayToStream("Hmm oil"));
+                                    }
+                                    else
+                                        ezb.SpeechSynth.Say("I do not eat this");
+                                    //ezb.SoundV4.PlayData(ezb.SpeechSynth.SayToStream("I do not eat this"));
+                                    break;
+                                }
+                            default: break;
+
                         }
-                        this.ezb.Servo.SetServoPosition(HeadServoHorizontalPort, mapPortToServoLimits[HeadServoHorizontalPort].CenterPosition + 45);
-                        await Task.Delay(1000);
-                        if (RecognizeObject("screwdriver"))
-                        {
-                            //TurnRight();
-                            //Forward();
-                            //squatGrabPosition.StartAction_Grab();
-                            //Reverse();
-                            //TurnLeft();
-                            ezb.SoundV4.PlayData(ezb.SpeechSynth.SayToStream("Screwdriver is on my left side"));
-                            return;
-                        }
-
-                        this.ezb.Servo.SetServoPosition(HeadServoHorizontalPort, mapPortToServoLimits[HeadServoHorizontalPort].CenterPosition - 45);
-                        await Task.Delay(1000);
-                        if (RecognizeObject("screwdriver"))
-                        {
-                            //TurnLeft();
-                            //Forward();
-                            //squatGrabPosition.StartAction_Grab();
-                            //Reverse();
-                            //TurnRight();
-                            ezb.SoundV4.PlayData(ezb.SpeechSynth.SayToStream("Screwdriver is on my right side."));
-
-                            return;
-                        }
-
-                        break;
-                    }
-                case "Hungry":
-                    {
-
-                        ezb.SoundV4.PlayData(ezb.SpeechSynth.SayToStream(("Yes I am always hungry! I would have an oil!")));
-                        var currentBitmap = camera.GetCurrentBitmap;
-
-                        var cvc = new CustomVisionCommunicator();
-                        var predictions = cvc.RecognizeObject(currentBitmap);
-                        if (RecognizeObject("oil"))
-                        {
-                            grabPosition.StartAction_Takefood();
-                            await Task.Delay(1000);
-                            ezb.SoundV4.PlayData(ezb.SpeechSynth.SayToStream("Hmm oil"));
-                        }
-                        else
-                            ezb.SoundV4.PlayData(ezb.SpeechSynth.SayToStream("I do not eat this"));
-                        break;
-                    }
-                default: break;
-
+                }
             }
+            catch(Exception ex)
+            { }
         }
 
         /// <summary>
@@ -1062,7 +1130,7 @@
             this.micClient.StartMicAndRecognition();
         }
 
-
+     
         #region ApiKeysSettings
 
         private void faceApiKey_TextChanged(object sender, EventArgs e)
@@ -1125,5 +1193,7 @@
             Settings.SaveSettings();
         }
         #endregion
+
+        
     }
 }

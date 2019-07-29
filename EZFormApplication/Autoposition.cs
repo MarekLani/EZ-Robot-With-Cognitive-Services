@@ -777,4 +777,156 @@ namespace EZFormApplication
             _leftHandPosition.Stop();
         }
     }
+    public class HeadRightUpPositions
+    {
+
+        EZ_B.AutoPosition _headRightUp;
+
+        public EZ_B.AutoPosition HeadRightUp
+        {
+            get
+            {
+                return _headRightUp;
+            }
+        }
+        public HeadRightUpPositions(EZ_B.EZB ezb)
+        {
+
+            _headRightUp = new AutoPosition(ezb, "My Auto Positions");
+
+            // Add servos
+            _headRightUp.Config.AddServo(EZ_B.Servo.ServoPortEnum.D16);
+            _headRightUp.Config.AddServo(EZ_B.Servo.ServoPortEnum.D17);
+            _headRightUp.Config.AddServo(EZ_B.Servo.ServoPortEnum.D12);
+            _headRightUp.Config.AddServo(EZ_B.Servo.ServoPortEnum.D13);
+            _headRightUp.Config.AddServo(EZ_B.Servo.ServoPortEnum.D14);
+            _headRightUp.Config.AddServo(EZ_B.Servo.ServoPortEnum.D3);
+            _headRightUp.Config.AddServo(EZ_B.Servo.ServoPortEnum.D2);
+            _headRightUp.Config.AddServo(EZ_B.Servo.ServoPortEnum.D7);
+            _headRightUp.Config.AddServo(EZ_B.Servo.ServoPortEnum.D8);
+            _headRightUp.Config.AddServo(EZ_B.Servo.ServoPortEnum.D4);
+            _headRightUp.Config.AddServo(EZ_B.Servo.ServoPortEnum.D5);
+            _headRightUp.Config.AddServo(EZ_B.Servo.ServoPortEnum.D9);
+            _headRightUp.Config.AddServo(EZ_B.Servo.ServoPortEnum.D6);
+            _headRightUp.Config.AddServo(EZ_B.Servo.ServoPortEnum.D1);
+            _headRightUp.Config.AddServo(EZ_B.Servo.ServoPortEnum.D0);
+            _headRightUp.Config.AddServo(EZ_B.Servo.ServoPortEnum.D18);
+
+            // *******************************************************
+            // ** Init Frames                                       **
+            // *******************************************************
+
+            // Normal
+            _headRightUp.Config.AddFrame("Normal", "984bd3d4-5a28-4239-93af-4ec541d4f915", new int[] { 90, 90, 90, 90, 90, 180, 180, 180, 90, 180, 90, 90, 90, 90, 90, 90 });
+
+            // Headrightup
+            _headRightUp.Config.AddFrame("Headrightup", "59cd8a05-0fcf-4128-a37f-89a912b53155", new int[] { 90, 90, 90, 90, 90, 180, 180, 180, 90, 180, 90, 90, 90, 80, 28, 90 });
+
+            // *******************************************************
+            // ** Init Actions                                      **
+            // *******************************************************
+
+            // Headrightup
+            _headRightUp.Config.AddAction(
+          new AutoPositionAction(
+            "Headrightup",
+            "3aefa4f5-7b39-4cfa-bce1-da141ca28cf7",
+            true,
+            false,
+            new AutoPositionActionFrame[] {
+            new AutoPositionActionFrame("984bd3d4-5a28-4239-93af-4ec541d4f915", 25, 3, -1),
+            new AutoPositionActionFrame("59cd8a05-0fcf-4128-a37f-89a912b53155", 25, 3, -1)
+            },
+            AutoPositionAction.ActionTypeEnum.NA));
+    }
+
+    public void StartAction_Headrightup()
+    {
+
+            _headRightUp.ExecAction("3aefa4f5-7b39-4cfa-bce1-da141ca28cf7");
+    }
+
+    public void Stop()
+    {
+
+            _headRightUp.Stop();
+    }
+}
+
+
+    public class HeadLeftUpPositions
+    {
+
+        EZ_B.AutoPosition _headleftup;
+
+        public EZ_B.AutoPosition HeadRightUp
+        {
+            get
+            {
+                return _headleftup;
+            }
+        }
+        public HeadLeftUpPositions(EZ_B.EZB ezb)
+        {
+
+            _headleftup = new AutoPosition(ezb, "My Auto Positions");
+
+            // Add servos
+            _headleftup.Config.AddServo(EZ_B.Servo.ServoPortEnum.D16);
+            _headleftup.Config.AddServo(EZ_B.Servo.ServoPortEnum.D17);
+            _headleftup.Config.AddServo(EZ_B.Servo.ServoPortEnum.D12);
+            _headleftup.Config.AddServo(EZ_B.Servo.ServoPortEnum.D13);
+            _headleftup.Config.AddServo(EZ_B.Servo.ServoPortEnum.D14);
+            _headleftup.Config.AddServo(EZ_B.Servo.ServoPortEnum.D3);
+            _headleftup.Config.AddServo(EZ_B.Servo.ServoPortEnum.D2);
+            _headleftup.Config.AddServo(EZ_B.Servo.ServoPortEnum.D7);
+            _headleftup.Config.AddServo(EZ_B.Servo.ServoPortEnum.D8);
+            _headleftup.Config.AddServo(EZ_B.Servo.ServoPortEnum.D4);
+            _headleftup.Config.AddServo(EZ_B.Servo.ServoPortEnum.D5);
+            _headleftup.Config.AddServo(EZ_B.Servo.ServoPortEnum.D9);
+            _headleftup.Config.AddServo(EZ_B.Servo.ServoPortEnum.D6);
+            _headleftup.Config.AddServo(EZ_B.Servo.ServoPortEnum.D1);
+            _headleftup.Config.AddServo(EZ_B.Servo.ServoPortEnum.D0);
+            _headleftup.Config.AddServo(EZ_B.Servo.ServoPortEnum.D18);
+
+            // *******************************************************
+            // ** Init Frames                                       **
+            // *******************************************************
+
+            // Normal
+            _headleftup.Config.AddFrame("Normal", "984bd3d4-5a28-4239-93af-4ec541d4f915", new int[] { 90, 90, 90, 90, 90, 180, 180, 180, 90, 180, 90, 90, 90, 90, 90, 90 });
+
+            // headleftup
+            _headleftup.Config.AddFrame("headleftup", "59cd8a05-0fcf-4128-a37f-89a912b53155", new int[] { 90, 90, 90, 90, 90, 180, 180, 180, 90, 180, 90, 90, 90, 80, 170, 90 });
+
+            // *******************************************************
+            // ** Init Actions                                      **
+            // *******************************************************
+
+            // headleftup
+            _headleftup.Config.AddAction(
+          new AutoPositionAction(
+            "headleftup",
+            "3aefa4f5-7b39-4cfa-bce1-da141ca28cf7",
+            true,
+            false,
+            new AutoPositionActionFrame[] {
+            new AutoPositionActionFrame("984bd3d4-5a28-4239-93af-4ec541d4f915", 25, 3, -1),
+            new AutoPositionActionFrame("59cd8a05-0fcf-4128-a37f-89a912b53155", 25, 3, -1)
+            },
+            AutoPositionAction.ActionTypeEnum.NA));
+        }
+
+        public void StartAction_headleftup()
+        {
+
+            _headleftup.ExecAction("3aefa4f5-7b39-4cfa-bce1-da141ca28cf7");
+        }
+
+        public void Stop()
+        {
+
+            _headleftup.Stop();
+        }
+    }
 }

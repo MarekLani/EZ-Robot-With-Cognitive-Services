@@ -70,6 +70,7 @@
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.SayCommandButton = new System.Windows.Forms.Button();
+            this.button3 = new System.Windows.Forms.Button();
             this.Video1GB.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.InfoGB.SuspendLayout();
@@ -213,7 +214,9 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.button3);
             this.groupBox2.Controls.Add(this.label11);
+            this.groupBox2.Controls.Add(this.button2);
             this.groupBox2.Controls.Add(this.CustomVisionProjectID_Textbox);
             this.groupBox2.Controls.Add(this.label10);
             this.groupBox2.Controls.Add(this.CustomVisionPredictionKey_TextBox);
@@ -480,11 +483,11 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(739, 11);
+            this.button2.Location = new System.Drawing.Point(6, 120);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(98, 40);
+            this.button2.Size = new System.Drawing.Size(134, 40);
             this.button2.TabIndex = 18;
-            this.button2.Text = "Objection";
+            this.button2.Text = "Objection Right";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
@@ -500,13 +503,22 @@
             this.SayCommandButton.UseVisualStyleBackColor = true;
             this.SayCommandButton.Click += new System.EventHandler(this.SayCommandButton_Click);
             // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(6, 166);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(134, 40);
+            this.button3.TabIndex = 35;
+            this.button3.Text = "Objection Left";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1130, 845);
             this.Controls.Add(this.SayCommandButton);
-            this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.ListenButton);
             this.Controls.Add(this.ReleaseServosButton);
@@ -583,6 +595,7 @@
         private System.Windows.Forms.TextBox CustomVisionIterationId_Textbox;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.TextBox CustomVisionApiKey_Textbox;
+        private System.Windows.Forms.Button button3;
     }
 }
 
